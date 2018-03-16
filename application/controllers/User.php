@@ -491,7 +491,49 @@ class User extends CI_Controller {
 	public function meeting_actor()
 	{
 		//config
+		$members = array('token', 'm_id');
 
+		//get
+		try
+		{
+			//get POST
+			$post = get_post();
+			if ( empty($post) )
+			{
+				$post = array(
+					'm_id' => $this->input->post('m_id')
+				);
+			}
+			$post['token'] = get_token();
+
+			//check form
+  			$this->load->library('form_validation');
+  			$this->form_validation->set_data($post);
+  			if ( ! $this->form_validation->run('meeting_actor'))
+  			{
+  				$this->load->helper('form');
+  				foreach ($members as $member)
+  				{
+  					if (form_error($member))
+  					{
+  						throw new Exception(strip_tags(form_error($member)));
+  					}
+  				}
+  				return;
+  			}
+
+  			//过滤 && join
+  			$this->load->model('User_model','my_user');
+  			$data = $this->my_user->meeting_actor(filter($post, $members));
+		}
+		catch (Exception $e)
+		{
+			output_data($e->getCode(), $e->getMessage(), array());
+			return;
+		}
+
+		//return
+  		output_data(1, '获取成功', $data);
 	}
 
 
@@ -696,5 +738,64 @@ class User extends CI_Controller {
 		output_data(1, '投票成功', array());
 	}
 
+
+	/*
+	 * 上传头像
+	 */
+	public function upload_img()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") 
+		{
+			return;
+		}
+
+		//config
+		$members = array('token', 'u_id', 'u_imgpath');
+
+		//get u_tel
+		$post['token'] = get_token();
+		$this->load->model('User_model', 'my_user');
+		$user = $this->my_user->get($post);
+		$post['u_id'] = $user;
+
+		//upload config
+		$config['upload_path'] = './uploads/user_img/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['file_name'] = $user;
+		$config['overwrite'] = TRUE;
+		$config['max_size'] = 10000;
+		$config['max_width'] = 1980;
+		$config['max_height'] = 1024;
+
+		//upload
+		try
+		{
+			$this->load->library('upload', $config);
+
+			if ( ! $this->upload->do_upload('userfile'))
+        	{
+            	$error = array('error' => $this->upload->display_errors());
+            	output_data(0, '上传失败', $error);
+	        }
+    		else
+        	{	
+        		$data = array('upload_data' => $this->upload->data()); 
+            	$post['u_imgpath'] = base_url() . 'uploads/user_icon/' . $data['upload_data']['file_name'];;
+
+            	//upload & filter            	
+            	$this->load->model('User_model', 'user');
+            	$data = $this->user->upload_img(filter($post, $members));
+            	
+        	}
+		}
+		catch(Exception $e)
+		{
+			output_data($e->getCode(), $e->getMessage(), array());
+			return;
+		}
+
+		//return
+		output_data(1, '上传成功', $data);
+	}
 }
 ?>

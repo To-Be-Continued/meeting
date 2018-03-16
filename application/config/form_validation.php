@@ -209,6 +209,13 @@ $config = array(
 			'label' => '会议ID',
 			'rules' => 'required'
 		)
+	),
+	'meeting_actor' => array(
+		array(
+			'field' => 'm_id',
+			'label' => '会议ID',
+			'rules' => 'required'
+		)
 	)
 
 );

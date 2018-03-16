@@ -1,5 +1,6 @@
 create table if not exists `user_t` (
     `u_id`             bigint auto_increment primary key not null,
+    `u_imgpath`        varchar(60),
     `u_pwd`            char(32) not null,
     `u_nickname`       varchar(12) not null,
     `u_position`       varchar(15),
@@ -15,9 +16,10 @@ create table if not exists `user_t` (
 
 create table if not exists `meeting_t` (
     `m_id` bigint auto_increment primary key not null,
+    `m_imgpath` varchar(60),
     `m_theme` varchar(30) not null,
     `m_introduction` varchar(50),
-    `m_startdata` date not null,
+    `m_startdate` date not null,
     `m_starttime` time not null,
     `m_length` int not null,
     `m_place` varchar(30) not null,

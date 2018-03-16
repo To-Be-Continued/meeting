@@ -1,5 +1,6 @@
 create table user_t (
      u_id              bigint auto_increment primary key not null,     /*用户ID*/
+     u_imgpath         varchar(50),                                    /*用户头像*/
      u_pwd             char(32) not null,                              /*密码，将输入得密码用MD5加密后存储*/
      u_nickname        varchar(12) not null,                           /*昵称*/
      u_position        varchar(15),                                    /*职位*/
@@ -15,9 +16,10 @@ create table user_t (
 
 create table meeting_t  (
      m_id              bigint auto_increment primary key not null,    /*会议ID*/
+     m_imgpath         varchar(50),                                   /*会议头像*/
      m_theme           varchar(30) not null,                          /*会议主题*/
      m_introduction    varchar(50),                                   /*会议简洁*/
-     m_startdata       date not null,                                 /*会议日期*/
+     m_startdate       date not null,                                 /*会议日期*/
      m_starttime       time not null,                                 /*会议时间*/
      m_length          int not null,                                  /*会议时长*/
      m_place           varchar(30) not null,                          /*会议地点*/

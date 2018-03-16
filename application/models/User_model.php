@@ -69,8 +69,26 @@ class User_model extends CI_Model {
 				$this->db->update('sys_token', $new_data, $where);
 			}
 		}
+	}
 
 
+	/*
+	 * 获取用户
+	 */
+	public function get($form)
+	{
+		//check token & get user
+		if (isset($form['token']))
+		{
+			$this->check_token($form['token']);
+		}
+		$where = array('token' => $form['token']);
+		$user = $this->db->select('u_id')
+					 ->where($where)
+					 ->get('sys_token')
+					 ->result_array()[0]['u_id'];
+
+		return $user;
 	}
 
 
@@ -88,7 +106,6 @@ class User_model extends CI_Model {
 		$members = array('u_tel', 'u_pwd');
 		$member_token = array('token', 'last_visit', 'u_id');
 
-		print_r($form);die;
 		//check u_tel
 		$where = array('u_tel' => $form['u_tel']);
 		if ( $result = $this->db->select('u_tel')
@@ -165,7 +182,7 @@ class User_model extends CI_Model {
 						'u_qq','u_weChat','u_address','u_showCard');
 
 		//check token & get user
-		if (isset($form['token']))
+		/*if (isset($form['token']))
 		{
 			$this->check_token($form['token']);
 		}
@@ -173,7 +190,9 @@ class User_model extends CI_Model {
 		$user = $this->db->select('u_id')
 					 ->where($where)
 					 ->get('sys_token')
-					 ->result_array()[0]['u_id'];
+					 ->result_array()[0]['u_id'];*/
+		//check token & get user
+		$user = $this->get($form);
 
 		//update
 		$where = array('u_id' => $user);
@@ -193,7 +212,7 @@ class User_model extends CI_Model {
 						 'm_createrId','m_autoJoin','m_3DSign','m_luckyDog','m_vote');
 
 		//check token &get user
-		if (isset($form['token']))
+		/*if (isset($form['token']))
 		{
 			$this->check_token($form['token']);
 		}
@@ -201,18 +220,20 @@ class User_model extends CI_Model {
 		$user = $this->db->select('u_id')
 					 ->where($where)
 					 ->get('sys_token')
-					 ->result_array()[0]['u_id'];
+					 ->result_array()[0]['u_id'];*/
+			
+		$user = $this->get($form)		 
 		$form['m_createrId'] = $user;
 		
 		//check exit meeting
-		/*$where = filter($form, $members);
+		$where = filter($form, $members);
 		if ( $ret = $this->db->select()
 							 ->where($where)
 							 ->get('meeting_t')
 							 ->result_array())
 		{
 			throw new Exception("已创建该会议");
-		}*/
+		}
 		//create
 		$data=filter($form,$members);
 		$this->db->insert('meeting_t', $data);
@@ -292,7 +313,7 @@ class User_model extends CI_Model {
 						'm_autoJoin','m_3DSign','m_luckyDog','m_vote');
 
 		//check token &get user
-		if (isset($form['token']))
+		/*if (isset($form['token']))
 		{
 			$this->check_token($form['token']);
 		}
@@ -300,10 +321,10 @@ class User_model extends CI_Model {
 		$user = $this->db->select('u_id')
 					 ->where($where)
 					 ->get('sys_token')
-					 ->result_array()[0]['u_id'];
+					 ->result_array()[0]['u_id'];*/
 
 		//create
-		$form['m_createrId'] = $user;
+		$form['m_createrId'] = $this->get($form);
 		$where = array('m_id' => $form['m_id']);
 		$data = filter($form,$members);
 		//echo $this->db->set($data)->get_compiled_insert('meeting_t');die;
@@ -319,8 +340,8 @@ class User_model extends CI_Model {
 		//config
 		$members = array('m_id', 'u_id');
 
-		//check token &get user
-  		if (isset($form['token']))
+		//check token & get user
+  		/*if (isset($form['token']))
   		{
   			$this->check_token($form['token']);
   		}
@@ -328,7 +349,8 @@ class User_model extends CI_Model {
   		$user = $this->db->select('u_id')
   			 		 ->where($where)
   					 ->get('sys_token')
-  					 ->result_array()[0]['u_id'];
+  					 ->result_array()[0]['u_id'];*/
+  		$user = $this->get($form);
 
 		//check m_id
 		$where = array('m_id' => $form['m_id']);
@@ -368,7 +390,34 @@ class User_model extends CI_Model {
  	 */
  	public function meeting_actor($form)
  	{
+ 		//check token & get user
+ 		$this->get($form);
 
+		//check m_id
+		$where = array('m_id' => $form['m_id']);
+
+		if ( ! $ret = $this->db->select('m_id')
+		 				   ->where($where)
+						   ->get('meeting_t')
+						   ->result_array())
+		{
+		 	throw new Exception("该会议不存在");
+		}
+
+		$ret = $this->db->select('u_id')
+						->where($where)
+						->get('meeting_participants')
+						->result_array();
+
+		foreach ($ret as $key => $val) 
+		{
+			$ans[$key] = $this->db->select('u_nickname')
+								  ->where($val)
+								  ->get('user_t')
+								  ->result_array()[0];
+		}
+		
+		return $ans;
  	}
 
 
@@ -380,8 +429,8 @@ class User_model extends CI_Model {
  		//config
  		$members = array('m_id', 'u_id');
 
- 		//check token &get user
- 		if (isset($form['token']))
+ 		//check token & get user
+ 		/*if (isset($form['token']))
   		{
   			$this->check_token($form['token']);
   		}
@@ -389,7 +438,8 @@ class User_model extends CI_Model {
   		$user = $this->db->select('u_id')
   			 		 ->where($where)
   					 ->get('sys_token')
-  					 ->result_array()[0]['u_id'];
+  					 ->result_array()[0]['u_id'];*/
+  		$user = $this->get($form);
 
   		$wheres = array(
   			'm_id' => $form['m_id'],
@@ -414,8 +464,8 @@ class User_model extends CI_Model {
  	 */
  	public function meeting_lucky_dog($form)
  	{
- 		//check token &get user
- 		if (isset($form['token']))
+ 		//check token & get user
+ 		/*if (isset($form['token']))
   		{
   			$this->check_token($form['token']);
   		}
@@ -423,7 +473,8 @@ class User_model extends CI_Model {
   		$user = $this->db->select('u_id')
   			 		 ->where($where)
   					 ->get('sys_token')
-  					 ->result_array()[0]['u_id'];
+  					 ->result_array()[0]['u_id'];*/
+  		$user = $this->get($form);
 
   		//check if power
   		$wheres = array(
@@ -477,7 +528,7 @@ class User_model extends CI_Model {
 		//config
 		$members = array('m_id', 'u_id');
 
-		//check token &get user
+		//check token
 		if (isset($form['token']))
 		{
 			$this->check_token($form['token']);
@@ -525,6 +576,29 @@ class User_model extends CI_Model {
 		//do vote
 		$voteNum = $ret[0]['voteNum'];
 		$this->db->update('meeting_vote', array('voteNum' => $voteNum + 1), $where);
+	}
+
+
+	/*
+	 * 上传头像
+	 */
+	public function upload_img($form)
+	{
+		//config
+		$member = array('u_imgpath');
+
+		//check token
+		if (isset($form['Utoken']))
+		{
+			$this->check_token($form['Utoken']);
+		}
+
+		//select user
+		$where = array('u_id' => $form['u_id']);
+		$data = filter($form, $member);
+		$this->db->update('user_info', $data, $where);
+
+		return $data;
 	}
 }
 
