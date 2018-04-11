@@ -24,9 +24,10 @@ class System extends CI_Controller {
 			$this->load->model('System_model', 'my_sys');
 			$data = $this->my_sys->today_meetings(filter($post, $members));
 		}
-		catch (exeception $e)
+		catch (Exception $e)
 		{
-			throw new Exception("获取失败");
+			output_data($e->getCode(), $e->getMessage(), array());
+			return;
 		}
 
 		//return
@@ -51,7 +52,8 @@ class System extends CI_Controller {
 		} 
 		catch (Exception $e) 
 		{
-			throw new Exception("获取失败");	
+			output_data($e->getCode(), $e->getMessage(), array());
+			return;	
 		}
 
 		//return
@@ -77,7 +79,8 @@ class System extends CI_Controller {
 		} 
 		catch (Exception $e) 
 		{
-			throw new Exception("获取失败");			
+			output_data($e->getCode(), $e->getMessage(), array());
+			return;		
 		}
 
 		//return
@@ -153,7 +156,8 @@ class System extends CI_Controller {
 		} 
 		catch (Exception $e) 
 		{
-			throw new Exception("获取失败");					
+			output_data($e->getCode(), $e->getMessage(), array());
+			return;				
 		}
 
 		//return

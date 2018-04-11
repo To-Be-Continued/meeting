@@ -51,7 +51,7 @@ class System_model extends CI_Model{
 		}
 
 		//get
-		$data = array('m_theme', 'm_introduction', 'm_length', 'm_startdate');
+		$data = array('m_id', 'm_imgpath', 'm_theme', 'm_introduction', 'm_length', 'm_startdate');
 		$where = array('m_startdate' => $form['m_startdate']);
 		$ret = $this->db->select($data)
 				  		   ->like($where)
@@ -59,7 +59,7 @@ class System_model extends CI_Model{
 						   ->result_array();
 		if ( ! $ret )
 		{
-			throw new Exception("今日无会议");
+			throw new Exception('今日无会议');
 		}
 		
 		//return
@@ -93,18 +93,17 @@ class System_model extends CI_Model{
 						   ->result_array();
 
 		//get_list
-		$data = array('m_theme', 'm_introduction', 'm_length', 'm_startdate', 'm_starttime');
+		$data = array('m_id', 'm_imgpath', 'm_theme', 'm_introduction', 'm_length', 'm_startdate', 'm_starttime');
+		if ( ! $wheres )
+		{
+			throw new Exception("无参加任何会议");
+		}
 		foreach ($wheres as $key => $value) 
 		{
 			$ret[$key] = $this->db->select($data)
 						->where($value)
 						->get('meeting_t')
 						->result_array()[0];
-		}
-
-		if ( ! $ret )
-		{
-			throw new Exception("无参加任何会议");
 		}
 
 		$ans = $this->my_sort($ret, 'm_startdate', SORT_DESC, SORT_REGULAR);
@@ -132,7 +131,7 @@ class System_model extends CI_Model{
 					 ->result_array()[0]['u_id'];
 
 		//get
-		$data = array('m_theme', 'm_introduction', 'm_length', 'm_startdate', 'm_starttime');
+		$data = array('m_id', 'm_imgpath', 'm_theme', 'm_introduction', 'm_length', 'm_startdate', 'm_starttime');
 		$ret = $this->db->select($data)
 						->where(array('m_createrId' => $user))
 						->get('meeting_t')
@@ -162,7 +161,7 @@ class System_model extends CI_Model{
 
 		//check m_id & release_meeting
 		$where = array('m_id' => $form['m_id']);
-		$data = array('m_theme', 'm_introduction', 'm_startdate', 'm_starttime','m_place', 'm_num', 'm_sponsor', 'm_organizer');
+		$data = array('m_theme', 'group_id', 'm_introduction', 'm_startdate', 'm_starttime','m_place', 'm_num', 'm_sponsor', 'm_organizer');
 		if ( ! $ret = $this->db->select($data)
 		 				   ->where($where)
 						   ->get('meeting_t')
@@ -193,7 +192,7 @@ class System_model extends CI_Model{
 					 ->get('sys_token')
 					 ->result_array()[0];
 
-		$data = array('u_nickname', 'u_position', 'u_company', 'u_tel', 'u_email', 'u_qq', 'u_weChat', 'u_address');
+		$data = array('u_imgpath', 'u_nickname', 'u_position', 'u_company', 'u_tel', 'u_email', 'u_qq', 'u_weChat', 'u_address');
 		if ( ! $ret = $this->db->select($data)
 							   ->where($user)
 							   ->get('user_t')

@@ -6,7 +6,7 @@
 
 <?php echo $error;?>
 
-<?php echo form_open_multipart('User/upload_img');?>
+<?php echo form_open_multipart('Meeting/upload_img');?>
 
 <input type="file" name="userfile" size="20" />
 

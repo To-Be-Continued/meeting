@@ -162,10 +162,66 @@ $config = array(
 	),
 	'set_vote' => array(
 		array(
-			'field' => 'u_id',
-			'label' => '用户ID',
+			'field' => 'm_id',
+			'label' => '会议ID',
 			'rules' => 'required'
 		),
+		array(
+			'field' => 'v_title',
+			'label' => '投票主题',
+			'rules' => 'required|max_length[20]|min_length[2]'
+		),
+		array(
+			'field' => 'v_summary',
+			'label' => '投票说明',
+			'rules' => 'required|max_length[200]|min_length[1]'
+		),
+		array(
+			'field' => 'v_type',
+			'label' => '投票类型',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'v_starttime',
+			'label' => '发布时间',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'v_endtime',
+			'label' => '结束时间',
+			'rules' => 'required'
+		)
+	),
+	'vote_detail' => array(
+		array(
+			'field' => 'm_id',
+			'label' => '会议ID',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'v_id',
+			'label' => '投票ID',
+			'rules' => 'required'
+		)
+	),
+	'set_notice' => array(
+		array(
+			'field' => 'm_id',
+			'label' => '会议ID',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'n_title',
+			'label' => '公告标题|max_length[200]|min_length[1]',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'n_text',
+			'label' => '公告内容',
+			'rules' => 'required|max_length[200]|min_length[1]'
+		)
+	),
+	'get_notice' => array(
 		array(
 			'field' => 'm_id',
 			'label' => '会议ID',
@@ -193,8 +249,13 @@ $config = array(
 	),
 	'add_manager' => array(
 		array(
-			'field' => 'u_id',
-			'label' => '用户ID',
+			'field' => 'op_tel',
+			'label' => '操作人员',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'set_tel',
+			'label' => '被删除人员',
 			'rules' => 'required'
 		),
 		array(
@@ -211,6 +272,75 @@ $config = array(
 		)
 	),
 	'meeting_actor' => array(
+		array(
+			'field' => 'm_id',
+			'label' => '会议ID',
+			'rules' => 'required'
+		)
+	),
+	'getlist_theme' => array(
+		array(
+			'field' => 'm_theme',
+			'label' => '主题',
+			'rules' => 'required|max_length[30]'
+		)
+	),
+	'get_list' => array(
+		array(
+			'field' => 'm_id',
+			'label' => '会议ID',
+			'rules' => 'required'
+		)
+	),
+	'invite_meeting' => array(
+		array(
+			'field' => 'invite_tel',
+			'label' => '邀请人员',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'invited_tel',
+			'label' => '被邀请人员',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'm_id',
+			'label' => '会议ID',
+			'rules' => 'required'
+		)
+	),
+	'delete_member' => array(
+		array(
+			'field' => 'op_tel',
+			'label' => '操作人员',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'del_tel',
+			'label' => '被删除人员',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'm_id',
+			'label' => '会议ID',
+			'rules' => 'required'
+		)
+	),
+	'get_img' => array(
+		array(
+			'field' => 'ob_tel',
+			'label' => '获取对象',
+			'rules' => 'required'
+		)
+	),
+	'get_meet_img' => array(
+		array(
+			'field' => 'm_id',
+			'label' => '会议对象',
+			'rules' => 'required'
+		)
+	),
+	'exit_meeting' => array(
 		array(
 			'field' => 'm_id',
 			'label' => '会议ID',
