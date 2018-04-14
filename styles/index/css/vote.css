@@ -1,0 +1,68 @@
+@charset "utf-8";
+/* CSS Document */
+.vote {
+	text-align:center;
+	display:flex; 
+	justify-content:center;
+	align-items:center;
+	z-index: 99;
+}
+#voteMain {
+	width: auto;
+	height: 800px;
+	margin-top:20px;
+	padding: 20px 20px 20px 20px;
+}
+.voteItem {
+	width: 100px;
+	height: 800px;
+	border: 1px solid #efefef;
+	float: left;
+	margin-left: 20px;
+}
+.voteValue {
+	width: 50px;
+	height: 800px;
+	background-color: #f47920;
+	margin: 0 auto;
+	margin-bottom: 0px;
+	border: 1px solid #fff;
+}
+.voteItem:hover .voteSpan {
+	display: block;
+}
+.voteValue:hover {
+	-webkit-box-shadow: 0px 0px 5px #808080;
+	-moz-box-shadow: 0px 0px 5px #808080;
+	box-shadow: 0px 0px 5px #808080;
+}
+#voteSpan {
+	width: 80px;
+	height: 30px;
+	background-color: #000;
+	float: left;
+	margin-top: -38px;
+	margin-left: -15px;
+	text-align: center;
+	line-height: 30px;
+	color: #fff;
+	text-align: center;
+	position: relative;
+	display: none;
+}
+.voteText {
+	font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+	text-align: center;
+	font-weight: 600;
+	color: #333;
+	line-height: 10px;
+	margin-top: 5px;
+}
+.voteSpanTri {
+	position: absolute;
+	width: 10px;
+	height: 6px;
+	background-image: url(tri.png);
+	margin-top: 30px;
+	margin-left: -15px;
+}

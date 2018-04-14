@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+  <meta http-equiv="Pragma" content="no-cache"> 
+  <meta http-equiv="Cache-Control" content="no-cache"> 
+  <meta http-equiv="Expires" content="0"> 
+  <title>后台管理</title>
+  <link href="<?php echo base_url('styles/index/css/')?>login.css" rel="stylesheet"  />
+</head>
+
+<body>
+<div class="login_box">
+      <div class="login_l_img"><img src="<?php echo base_url('styles/index/images/')?>login-img.png" /></div>
+      <div class="login">
+          <div class="login_logo"><a href="#"><img src="<?php echo base_url('styles/index/images/')?>login_logo.png" /></a></div>
+          <div class="login_name">
+               <p>A27移动会议实时互动系统</p>
+          </div>
+          <form action="<?php echo site_url('index/enterHome')?>" method="post">
+              <input name="u_tel" type="text" id="u_tel" value="用户名" onfocus="this.value=''" onblur="if(this.value==''){this.value='用户名'}">
+              <span id="password_text" onclick="this.style.display='none';document.getElementById('u_pwd').style.display='block';document.getElementById('u_pwd').focus().select();" >密码</span>
+              <input name="u_pwd" type="password" id="u_pwd" style="display:none;" onblur="if(this.value==''){document.getElementById('password_text').style.display='block';this.style.display='none'};"/>
+              <input  value="登录" style="width:100%;" type="submit" >
+          </form>
+      </div>
+      <div class="copyright">启迹工作室</div>
+</div>
+</body>
+</html>

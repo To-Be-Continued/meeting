@@ -272,7 +272,7 @@ class User extends CI_Controller {
  			if ( empty($post) )
  			{
  				$post = array(
-					'op_tel' => $this->input->post('ob_tel')
+					'op_tel' => $this->input->post('op_tel')
 				);
  			}
 			$post['token'] = get_token();

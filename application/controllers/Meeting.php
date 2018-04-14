@@ -24,7 +24,7 @@ class Meeting extends CI_Controller {
  			{
  				$post = array(
  					'm_theme' 		 => $this->input->post('m_theme')		,
- 					'group_id'		 => $this->input->post('groutp_id')		,
+ 					'group_id'		 => $this->input->post('group_id')		,
  					'm_introduction' => $this->input->post('m_introduction'),
  					'm_startdate' 	 => $this->input->post('m_startdate')	,
  					'm_starttime' 	 => $this->input->post('m_starttime')	,
@@ -1137,7 +1137,221 @@ class Meeting extends CI_Controller {
 	}
 
 
-	/***/
+	/*
+	 * 添加会议标签
+	 */
+	public function add_label()
+	{
+		//config
+		$members = array('token','m_id', 'l_id');
+
+		try
+		{
+			//get POST
+			$post = get_post();
+			if ( empty($post) )
+			{
+				$post = array(
+					'm_id'    => $this->input->post('m_id'),
+					'l_id'    => $this->input->post('l_id')
+
+				);
+			}
+			$post['token'] = get_token();
+
+			//check form
+  			$this->load->library('form_validation');
+  			$this->form_validation->set_data($post);
+  			if ( ! $this->form_validation->run('add_label'))
+  			{
+  				$this->load->helper('form');
+  				foreach ($members as $member)
+  				{
+  					if (form_error($member))
+  					{
+  						throw new Exception(strip_tags(form_error($member)));
+  					}
+  				}
+  				return;
+  			}
+
+  			//过滤 && delete
+  			$this->load->model('Meeting_model','my_meeting');
+  			$data = $this->my_meeting->add_label(filter($post, $members));
+		}
+		catch (Exception $e)
+		{
+			output_data($e->getCode(), $e->getMessage(), array());
+			return;
+		}
+
+		//return
+  		output_data(1, '添加成功', array());
+	}
+
+
+	/*
+	 * 推荐会议
+	 */
+	public function recommend()
+	{
+		//config
+		$member = array('token');
+
+		//get post
+		try 
+		{
+			$post['token'] = get_token();
+
+			$this->load->model('Meeting_model', 'my_meeting');
+			$data = $this->my_meeting->recommend(filter($post, $member));
+			
+		} 
+		catch (Exception $e) 
+		{
+			output_data($e->getCode(), $e->getMessage(), array());
+			return;	
+		}
+
+		//return 
+		output_data(1,'您可能感兴趣', $data);
+	}
+
+
+	/*
+	 * 发红包
+	 */
+	public function set_redpacket()
+	{
+		//config
+		$members = array('token', 'r_name', 'r_money', 'r_num', 'r_type');
+
+		try
+		{
+			//get POST
+			$post = get_post();
+			if ( empty($post) )
+			{
+				$post = array(
+					'r_name'   => $this->input->post('r_name'),
+					'r_money'  => $this->input->post('r_money'),
+					'r_num'    => $this->input->post('r_num')
+				);
+			}
+			$post['token'] = get_token();
+
+			//check form
+  			$this->load->library('form_validation');
+  			$this->form_validation->set_data($post);
+  			if ( ! $this->form_validation->run('set_red'))
+  			{
+  				$this->load->helper('form');
+  				foreach ($members as $member)
+  				{
+  					if (form_error($member))
+  					{
+  						throw new Exception(strip_tags(form_error($member)));
+  					}
+  				}
+  				return;
+  			}
+
+  			//过滤 && delete
+  			$this->load->model('Meeting_model','my_meeting');
+  			$data = $this->my_meeting->set_redpacket(filter($post, $members));
+		}
+		catch (Exception $e)
+		{
+			output_data($e->getCode(), $e->getMessage(), array());
+			return;
+		}
+
+		//return
+  		output_data(1, '发送成功', $data);
+	}
+
+
+	/*
+	 * 抢红包
+	 */
+	public function snatch()
+	{
+		//config
+		$members = array('token', 'r_id');
+
+		try
+		{
+			//get POST
+			if ( empty($post) )
+			{
+				$post = array(
+					'r_id'   => $this->input->post('r_id')
+				);
+			}
+			$post['token'] = get_token();
+
+			//check form
+  			$this->load->library('form_validation');
+  			$this->form_validation->set_data($post);
+  			if ( ! $this->form_validation->run('snatch_red'))
+  			{
+  				$this->load->helper('form');
+  				foreach ($members as $member)
+  				{
+  					if (form_error($member))
+  					{
+  						throw new Exception(strip_tags(form_error($member)));
+  					}
+  				}
+  				return;
+  			}
+
+  			//过滤 && delete
+  			$this->load->model('Meeting_model','my_meeting');
+  			$data = $this->my_meeting->snatch(filter($post, $members));
+		}
+		catch (Exception $e)
+		{
+			output_data($e->getCode(), $e->getMessage(), array());
+			return;
+		}
+
+		//return
+  		output_data(1, '抢到成功', $data);	
+	}
+
+
+	/*
+	 * 红包详情
+	 */
+	public function red_detail()
+	{
+		//config
+		$members = array('token', 'r_id');
+
+		try
+		{
+			//get POST
+			if ( ! $this->input->get('r_id'))
+			{
+				throw new Exception('必须指定r_id');
+			}
+			$post['r_id'] = $this->input->get('r_id');
+			$post['token'] = get_token();
+
+  			//过滤 && delete
+  			$this->load->model('Meeting_model','my_meeting');
+  			$data = $this->my_meeting->red_detail(filter($post, $members));
+		}
+		catch (Exception $e)
+		{
+			output_data($e->getCode(), $e->getMessage(), array());
+			return;
+		}
+
+		//return
+  		output_data(1, '获取成功', $data);	
+	}
 }
 
 ?>

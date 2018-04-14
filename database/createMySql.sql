@@ -1,3 +1,4 @@
+create database a27;
 create table user_t (
     u_id              bigint auto_increment primary key not null,     /*用户ID*/
     u_imgpath         varchar(200),                                   /*用户头像*/
@@ -66,8 +67,8 @@ create table meeting_vote  (
     v_title           varchar(20),                                   /*投票主题*/
     v_summary         varchar(200),                                  /*投票说明*/
     v_type            boolean default '0',                           /*投票类型*/
-    v_starttime       time,                                          /*投票开始时间*/
-    v_endtime         time                                           /*投票结束时间*/
+    v_starttime       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,           /*投票开始时间*/
+    v_endtime         TIMESTAMP                                      /*投票结束时间*/
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -93,15 +94,53 @@ create table vote_user(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+create table sys_label(
+    l_id              bigint auto_increment not null primary key,    /*标签ID*/
+    l_name            varchar(20)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 create table meeting_label(
-    
+    ml_id             bigint auto_increment not null primary key,    /*ID*/
+    m_id              bigint not null,                               /*会议ID*/
+    l_id              bigint not null,                               /*标签ID*/
+    foreign key(m_id)references meeting_t(m_id) on delete cascade on update cascade,
+    foreign key(l_id)references sys_label(l_id) on delete cascade on update cascade
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 create table sys_token  (
-    token_id 	      bigint auto_increment  primary key not null,  /*token编号*/
-    token 	          varchar(200) not null,                        /*token*/
-    last_visit        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,			/*时间*/
-    u_id              bigint(20)	not null						/*用户id*/
+    token_id          bigint auto_increment  primary key not null,  /*token编号*/
+    token             varchar(200) not null,                        /*token*/
+    last_visit        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,          /*时间*/
+    u_id              bigint(20)    not null                        /*用户id*/
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+create table red_packet(
+    r_id              bigint auto_increment not null primary key,    /*红包ID*/
+    u_id              bigint not null,                               /*发送用户ID*/
+    r_money           bigint not null,                               /*红包金额*/
+    r_num             bigint not null,                               /*红包数量*/
+    r_name            varchar(50)                                   /*红包名称*/
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+create table user_snatch(
+    us_id             bigint auto_increment not null primary key,    /*ID*/
+    u_id              bigint not null,                               /*用户ID*/
+    r_id              bigint not null,                               /*红包ID*/
+    us_money          double not null,                               /*抢到红包金额*/
+    r_banlance        double not null,                               /*余额*/
+    foreign key(r_id)references red_packet(r_id) on delete cascade on update cascade
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+create table if not exists `user_power`(
+    `user_power_id`    bigint auto_increment primary key not null,
+    `sys_login`        boolean default '0',
+    `opeate_data`      boolean default '0',
+    `add_admin`        boolean default '0',
+    `u_id`             bigint not null,
+    foreign key(`u_id`)references user_t(`u_id`)on delete cascade on update cascade
+)engine=InnoDB DEFAULT CHARSET=utf8;

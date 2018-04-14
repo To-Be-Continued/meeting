@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html"; charset="utf-8"/>
+		<link href="<?php echo base_url('styles/admin/css/')?>style.css" rel="stylesheet" type="text/css"/>
+		<style type="text/css">
+			#tableList{
+				border:1px solid #c4c4c4;
+				font-size: 8px;
+				margin: 0 auto;
+			}
+			#tableList th{
+				border-left:0px;
+				border-right:0px;
+				border-bottom:1px solid #c4c4c4;
+				height:30px;
+				background-color:#f1f1f1;
+				text-align: center;
+			}
+			#tableList td{
+				border-left:1px solid #c4c4c4;
+				border-bottom:1px solid #c4c4c4;
+				border-top: 1px solid #c4c4c4;
+				text-align: center;
+				height:40px;
+			}
+			.toptabel{
+				border-bottom:1px solid #c4c4c4;
+				width:100%;
+				font-size:12px;
+				text-align:left;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="toptabel">
+			<table>
+				<tr>
+					<th>用户管理</th>
+				</tr>
+			</table>
+		</div>
+		<div class="divButton">
+			&nbsp;<input type="button" onclick="" value="删除"/>
+		</div>
+		<div>
+			<table id="tableList" cellspacing="0" cellpadding="0" width="100%">
+				<thead>
+					<tr>
+						<th><input type="checkbox" checked="checked" /></th>
+						<th>用户ID</th>
+						<th>用户手机</th>
+						<th>用户昵称</th>
+						<th>公司</th>
+						<th>职位</th>
+						<th>地址</th>
+						<th>邮箱</th>
+						<th>QQ</th>
+						<th>微信</th>
+						<th>显示名片</th>
+						<th>操作</th> 
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					 	foreach($usersInfo as $value)
+						{
+							echo "<tr><td style='width:40px'><input type='checkbox'/></td>";
+							echo "<td style='width:70px'>".$value['u_id']."</td>";
+							echo "<td style='width:70px'>".$value['u_tel']."</td>";
+							echo "<td style='width:100px'>".$value['u_nickname']."</td>";
+							echo "<td>".$value['u_company']."</td>";
+							echo "<td>".$value['u_position']."</td>";
+							echo "<td>".$value['u_address']."</td>";
+							echo "<td>".$value['u_email']."</td>";
+							echo "<td>".$value['u_qq']."</td>";
+							echo "<td>".$value['u_weChat']."</td>";
+							echo "<td style='width:40px'>".$value['u_showCard']."</td>";
+							echo "<td style='width:100px;font-weight: bold;'><a href='#'>重置密码</a>|<a href='#' onclick=''>删除用户</a></td></tr>";
+						}
+					?>
+				</tbody>
+			</table>
+			<div>
+				<form action="<?php echo site_url('admin/showUsers')?>" method="post">
+					<input name="page" id="page" type="text" value="<?php echo $page?>">
+					<input type="submit" value="下一页"/>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

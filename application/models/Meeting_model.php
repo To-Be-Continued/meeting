@@ -813,6 +813,7 @@ class Meeting_model extends CI_Model {
 		{
 			throw new Exception("该会议不存在");
 		}
+
 		//check if creater
 		if ( $user == $ret[0]['m_createrId'])
 		{
@@ -826,6 +827,245 @@ class Meeting_model extends CI_Model {
 			'u_id' => $user
 		);
 		$this->db->delete('meeting_participants', $wheres);
+	}
+
+
+	/*
+	 * 添加会议标签
+	 */
+	public function add_label($form)
+	{
+		//config
+		$members = array('m_id', 'l_id');
+
+		//check token
+		if (isset($form['token']))
+		{
+			$this->load->model('User_model', 'my_user');
+  			$this->my_user->check_token($form['token']);
+  		}
+
+		//check m_id
+		if ( ! $ret =  $this->db->select('m_id')
+								->where(array('m_id' => $form['m_id']))
+								->get('meeting_t')
+								->result_array())
+		{
+			throw new Exception("该会议不存在");
+		}
+
+		//check l_id
+		if ( ! $ret =  $this->db->select('l_id')
+								->where(array('l_id' => $form['l_id']))
+								->get('sys_label')
+								->result_array())
+		{
+			throw new Exception("该标签不存在");
+		}
+
+		//check exist
+		if (   $ret =  $this->db->select()
+								->where(filter($form, $members))
+								->get('meeting_label')
+								->result_array())
+		{
+			throw new Exception("已添加该标签");
+		}
+		//do insert
+		$this->db->insert('meeting_label', filter($form, $members));
+	}
+
+
+	/*
+	 * 推荐会议
+	 */
+	public function recommend($form)
+	{
+		//check token & get user
+		if (isset($form['token']))
+		{
+			$this->load->model('User_model', 'my_user');
+  			$user = $this->my_user->get($form);
+  		}
+
+  		//get user join meeting label & sort
+  		$ret = $this->db->select('l_id')
+  						->join('meeting_label','meeting_label.m_id=meeting_participants.m_id')
+  						->get_where('meeting_participants', array('u_id'=>$user))
+  						->result_array();
+
+  		foreach ($ret as $key => $val) 
+  		{
+  			$_ret[$key]=$val['l_id'];
+  		}
+  		$tmp=array_count_values($_ret);
+  		arsort($tmp);
+
+  		//according l_id find m_id
+  		foreach ($tmp as $key => $val)
+  		{
+  			if ($arr = $this->db->select('m_id')
+  								->where(array('l_id' => $key))
+  								->get('meeting_label')
+  								->result_array())
+  			{
+  				break;
+  			}
+  		}
+
+  		//filter
+  		foreach ($arr as $key => $val) 
+  		{
+  			$_arr[$key]=$val['m_id'];
+  		}
+  		$t = $this->db->select('m_id')
+  					  ->where(array('u_id'=>$user))
+  					  ->get('meeting_participants')
+  					  ->result_array();
+  		foreach ($t as $key => $val) 
+  		{
+  			$t[$key]=$val['m_id'];
+  		}			  
+  		$res=array_diff($_arr, $t);
+
+  		//recommend
+  		$i=0;
+  		$data = array('m_id', 'm_imgpath', 'm_theme', 'm_introduction', 'm_length', 'm_startdate');
+  		$nowdate=date('Y-m-d', time());
+  		$ans=null;
+  		foreach ($res as $key => $val) 
+  		{
+  			if ($que = $this->db->select($data)
+  								->where('m_startdate >',$nowdate)
+  								->where(array('meeting_t.m_id'=>$val))
+  								->get('meeting_t')
+  								->result_array())
+  			{
+  				$ans[$i++]=$que[0];
+  			}
+  		}
+  		//return
+  		return $ans;
+
+	}
+
+
+	/*
+	 * 发红包
+	 */
+	public function set_redpacket($form)
+	{
+		//config
+		$members = array('u_id', 'r_money', 'r_num', 'r_name');
+		$members_banlance = array('us_money','r_banlance', 'r_id');
+
+		//check token get user
+		if (isset($form['token']))
+		{
+			$this->load->model('User_model','my_user');
+			$user = $this->my_user->get($form);
+			$form['u_id']=$user;
+		}
+
+		//do insert
+		$this->db->insert('red_packet', filter($form, $members));
+		
+		//set each money
+		$id = $this->db->insert_id();
+		$data['r_id'] = $id;
+		$data['r_banlance'] = $form['r_money'];
+		$min=0.01;//每个人最少能收到0.01元
+		for ($i=1; $i < $form['r_num']; $i++)
+		{ 
+			$safe_total=($data['r_banlance']-($form['r_num']-$i)*$min)/($form['r_num']-$i);//随机安全上限   
+    		$data['us_money']=mt_rand($min*100,$safe_total*100)/100;   
+    		$data['r_banlance']=$data['r_banlance']-$data['us_money'];
+    		$this->db->insert('user_snatch',filter($data, $members_banlance));
+		}
+		$data['us_money']=$data['r_banlance'];
+		$data['r_banlance']=0;
+		$this->db->insert('user_snatch',filter($data, $members_banlance));
+
+		return $id;		
+	}
+
+
+	/*
+	 * 抢红包
+	 */
+	public function snatch($form)
+	{
+		//check token get user
+		if (isset($form['token']))
+		{
+			$this->load->model('User_model','my_user');
+			$user = $this->my_user->get($form);
+		}
+
+		//check if snatch
+		if ( $ret = $this->db->select('u_id')
+							 ->where(array('u_id'=>$user,'r_id' => $form['r_id']))
+							 ->get('user_snatch')
+							 ->result_array())
+		{
+			throw new Exception("已抢过该红包");	
+		}
+
+		//check if exist
+		if ( $ret = $this->db->select(array('us_id','us_money'))
+							 ->where('u_id =', 0)
+							 ->where(array('r_id' => $form['r_id']))
+							 ->get('user_snatch')
+							 ->result_array())
+		{
+			$this->db->update('user_snatch', array('u_id'=>$user),$ret[0]);
+			return $ret[0]['us_money'];
+		}
+		else
+		{
+			throw new Exception("抢完了");
+		}
+	}
+
+
+	/*
+	 * 获取红包详情
+	 */
+	public function red_detail($form)
+	{
+		//check token
+		if (isset($form['token']))
+		{
+			$this->load->model('User_model','my_user');
+			$user = $this->my_user->get($form);
+		}
+
+		$data['from'] = $this->db->select(array('u_tel','u_nickname','r_money', 'r_num'))
+								 ->join('user_t','user_t.u_id=red_packet.u_id')
+								 ->get_where('red_packet', array('r_id' => $form['r_id']))
+								 ->result_array()[0];
+
+		$banlance = $this->db->select('r_banlance')
+							 ->where('u_id >', 0)
+							 ->where(array('r_id' => $form['r_id']))
+							 ->order_by('r_banlance','ASC')
+							 ->get('user_snatch')
+							 ->result_array();
+		if (empty($banlance))
+		{
+			$data['from']['r_banlance']=$data['from']['r_money'];
+		}
+		else
+		{
+			$data['from']['r_banlance']=$banlance[0]['r_banlance'];
+		}
+		$data['other'] = $this->db->select(array('u_tel','u_nickname', 'us_money'))
+								  ->join('user_t','user_t.u_id=user_snatch.u_id')
+								  ->where('user_snatch.u_id >',0)
+								  ->get_where('user_snatch', array('r_id' => $form['r_id']))
+						  	  	  ->result_array();
+
+		return $data;
 	}
 }
 

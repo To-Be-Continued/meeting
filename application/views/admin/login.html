@@ -1,0 +1,126 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
+        <title>后台管理系统</title>
+        <style>
+            body{
+               margin: 0px;
+               padding:0px;
+               background-color:#a4aeba; 
+            }
+            table{
+                padding-left:14%;
+            }
+            form{
+            }
+            .div1{
+                float: left;
+                width:100%;
+                height:3em;
+                line-height: 3em;
+                background-color: #00709f;
+            }
+            .div2{
+                 text-align: center;
+
+            }
+             .div3{
+                padding-top:13%;
+                width:30em;
+                margin:0 auto;
+                text-align: center;
+            }   
+            .div4{
+                background-color:#e2e7ed;
+                width:26em;
+                height:13em; 
+                border-radius:8px;
+                margin:0 auto;
+            }
+            .div5{
+                width:40%;
+                height:13em;
+                float: left;
+            }
+            .div6{
+                width:100%;
+                height:13em;
+                text-align: center;
+            }
+            .spantitle1{
+                color:white;
+                font-size:0.7em;
+                padding-left:1%;
+            }
+            .spantitle2{
+                color:#c19600;
+                font-size:1.4em;
+                padding-left:1%;
+            }
+            .spantitle3{
+                color:#f00;
+                font-size:0.8em;
+                padding-left:1%;
+            }
+            .inputstyle{
+                -moz-appearance:none;
+                margin-bottom:12px;
+                border-radius:4px;
+                width:15em;
+                height:2em;
+                border:1px solid #c8cccf;
+
+            }
+            .btnstyle{
+                -moz-appearance:none;
+                border-radius:4px;
+                border:none;
+                height:2em;
+                width:6em;
+                background-color:#4d83f0;
+                color:white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="div1">
+            <span class="spantitle1">欢迎来到a27后台管理系统</span>
+        </div class="div2">
+            <div>
+                <div class="div3">
+                    <table>
+                        <tr>
+                            <td> <img src=""/></td>
+                            <td><h2>后端管理系统</h2></td>
+                        </tr>
+                    </table>
+                    <br>
+                </div>
+            <div class="div4">
+                <div class="div6">
+                    <form id="form" action="<?php echo site_url('admin/getaccess')?>" method="post">
+                        <br> 
+                        <div>
+                            <span class="spantitle2">用户登录</span><span style="color:#c5c5c5">UserLogin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        </div>
+                        <br>
+                        <div>
+                            <span>账号:</span>
+                            <input id="u_tel" name="u_tel" class="inputstyle" type="text" placeholder="  admin" />
+                            <?php echo form_error('u_tel','<span>','</span>')?>
+                        </div>
+                        <div>
+                            <span>密码:</span>
+                            <input id="u_pwd" name="u_pwd" class="inputstyle" type="password" placeholder="  密码" />
+                            <?php echo form_error('u_pwd','<span>','</span>')?>
+                        </div>
+                        <div>
+                            <input class="btnstyle" type="submit" value="登入" />
+                        </div> 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

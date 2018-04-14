@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+		<link href="<?php echo base_url('styles/admin/css/')?>style.css" rel="stylesheet" type="text/css"/>
+		<style type="text/css">
+		    body{
+		    	background-color:#f0f0f0;
+		    }
+			.tablestyle1{
+				width:100%;
+				height:300px;
+				margin: 0 auto;
+			}
+			.divstyle2{
+				background-color: #f2f2f2;
+				width:1000px;
+				height:400px;
+				margin-left:10%;
+				margin-top:8%; 
+
+			}
+			.tdstyle1{
+				border-left:1px solid #00a3e7;
+				border-bottom:1px solid #00a3e7;
+				border-right:1px solid #00a3e7; 
+				padding-right:1%;
+				width:40%;
+			}
+			.tdstyle2{
+				border-right:1px solid #00a3e7;
+				border-bottom:1px solid #00a3e7;
+				padding-left:1%;
+
+			}
+			.toptabel{
+				border-bottom:1px solid #c4c4c4;
+				width:100%;
+				font-size:12px;
+				text-align:left;
+			}
+		</style>
+		<script type='text/javascript'>
+			function getCookie()
+			{
+				return document.cookie.split(';')[0];
+			}
+		</script>
+	</head>
+	<body>
+		<table class="toptabel">
+				<tr>
+					<th>个人设置</th>
+				</tr>
+			</table>
+		<div class="divstyle2">
+			<form id="form" action="<?php echo site_url('admin/updateInfo')?>" method="post">
+				<table class="tablestyle1" cellspacing="0" cellpadding="0">
+					<thead>
+						<tr>
+							<th colspan="2" align="center" style="background-color:#00a3e7;
+							           height:40px;">用户信息
+							</th>
+						<tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="right" class="tdstyle1">昵称:</td>
+							<td class="tdstyle2">
+								<input id="u_nickname" name="u_nickname" type="text" /> 
+							</td>
+						</tr>
+						<tr>
+							<td align="right" class="tdstyle1">密码:</td>
+							<td class="tdstyle2">
+								<input id="u_pwd" name="u_pwd" type="password"/>
+							</td>
+						</tr>
+						<tr>
+							<td align="right" class="tdstyle1">电话:</td>
+							<td class="tdstyle2">
+								<input id="u_tel" name="u_tel" type="text"/>
+							</td>
+						</tr>
+						<tr>
+							<td align="right" class="tdstyle1">邮箱:</td>
+							<td class="tdstyle2">
+								<input id="u_email" name="u_email" type="text"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<input  id="token" name="token" type="hidden" 
+								        value="<?php
+								        			if(!empty($_COOKIE['token'])) 
+								        			echo $_COOKIE['token'];
+								        		?>">
+								<input type="submit" value="确认修改"> 
+							</td>
+						</tr>
+					</tbody>
+				</table>	
+			</form>
+		</div>
+	</body> 
+</html>

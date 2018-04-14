@@ -255,7 +255,7 @@ $config = array(
 		),
 		array(
 			'field' => 'set_tel',
-			'label' => '被删除人员',
+			'label' => '被设置人员',
 			'rules' => 'required'
 		),
 		array(
@@ -328,7 +328,7 @@ $config = array(
 	),
 	'get_img' => array(
 		array(
-			'field' => 'ob_tel',
+			'field' => 'op_tel',
 			'label' => '获取对象',
 			'rules' => 'required'
 		)
@@ -346,7 +346,69 @@ $config = array(
 			'label' => '会议ID',
 			'rules' => 'required'
 		)
-	)
+	),
+	'label_register' => array(
+		array(
+			'field' => 'l_name',
+			'label' => '标签名',
+			'rules' => 'required'
+		)
+	),
+	'label_update' => array(
+		array(
+			'field' => 'l_id',
+			'label' => '标签ID',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'l_name',
+			'label' => '标签名',
+			'rules' => 'required'
+		)
+	),
+	'label_delete' => array(
+		array(
+			'field' => 'l_id',
+			'label' => '标签ID',
+			'rules' => 'required'
+		)
+	),
+	'add_label' => array(
+		array(
+			'field' => 'l_id',
+			'label' => '标签ID',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'm_id',
+			'label' => '会议ID',
+			'rules' => 'required'
+		)
+	),
+	'set_red' => array(
+		array(
+			'field' => 'r_name',
+			'label' => '红包名称',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'r_num',
+			'label' => '红包个数',
+			'rules' => 'required|greater_than[0]'
+		),
+		array(
+			'field' => 'r_money',
+			'label' => '红包金额',
+			'rules' => 'required|greater_than[0]'
+		)
+	),
+	'snatch_red' => array(
+		array(
+			'field' => 'r_id',
+			'label' => '红包ID',
+			'rules' => 'required'
+		)
+	),
 
 );
 

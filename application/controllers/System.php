@@ -163,5 +163,10 @@ class System extends CI_Controller {
 		//return
 		output_data(1, '获取成功', $data);
 	}
+
+
+	/*
+	 * 关于我们
+	 */
 }
 ?>

@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html"; charset="utf-8"/>
+		<link href="<?php echo base_url('styles/admin/css/')?>style.css" rel="stylesheet" type="text/css"/>
+		<style type="text/css">
+			#tableList{
+				border:1px solid #c4c4c4;
+				font-size: 8px;
+				margin: 0 auto;
+			}
+			#tableList th{
+				border-left:0px;
+				border-right:0px;
+				border-bottom:1px solid #c4c4c4;
+				height:30px;
+				background-color:#f1f1f1;
+				text-align: center;
+			}
+			#tableList td{
+				border-left:1px solid #c4c4c4;
+				border-bottom:1px solid #c4c4c4;
+				border-top: 1px solid #c4c4c4;
+				text-align: center;
+				height:40px;
+			}
+			#detailed{
+				font-size: 8px;
+				margin: 0 auto;
+			}
+			#detailed th{
+				border-top:1px solid #c4c4c4;
+				border-left:1px solid #c4c4c4;
+				border-right:1px solid #c4c4c4; 
+			}
+			#detailed td{
+				border:1px solid #c4c4c4;
+				height:60px;
+			}
+			.toptabel{
+				border-bottom:1px solid #c4c4c4;
+				width:100%;
+				font-size:12px;
+				text-align:left;
+			}
+		</style>
+		<script type="text/javascript"> 
+			function showDialog() 
+			{
+				document.getElementById('floating').style.display = "block";
+				document.getElementById('overlay').style.display = "block";
+			}
+			function hideDialog()
+			{
+				document.getElementById('floating').style.display = "none";
+				document.getElementById('overlay').style.display = "none";
+			}
+		</script>
+	</head>
+	<body style="overflow:hidden; ">
+		<div class="toptabel">
+			<table>
+				<tr>
+					<th>会议管理</th>
+				</tr>
+			</table>
+		</div>
+		<div class="divButton">
+			&nbsp;<input type="button" value="删除"/>
+		</div>
+		<div>
+			<table id="tableList" cellspacing="0" cellpadding="0" width="100%">
+				<thead>
+					<tr>
+						<th><input type="checkbox" checked="checked" /></th>
+						<th>会议ID</th>
+						<th>会议主题</th>
+						<th>发起者</th>
+						<th>发起者ID</th>
+						<th>发布时间</th>
+						<th>是否通过审核</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						foreach($meetsInfo as $value)
+						{
+							echo "<tr><td><input type='checkbox'/></td>";
+							echo "<td>".$value['m_id']."</td>";
+							echo "<td>".$value['m_theme']."</td>";
+							echo "<td>".$value['m_createrId']."</td>";
+							echo "<td>".$value['m_startdate']."</td>";
+							echo "<td>".$value['m_starttime']."</td>";
+							echo "<td>".$value['m_length']."</td>";
+							echo "<td><a href='#' onclick='showDialog()'>查看</a>|<a href='#'>删除</a></td></tr>";
+						}
+					?>
+				</tbody>
+			</table>
+		</div>
+		<div>
+			<form action="<?php echo site_url('admin/showMeets')?>" method="post">
+				<input type="text" name="page" value="<?php echo $page ?>">
+				<input type="submit" value="下一页">
+			</form>
+		</div>
+		<div>
+			<form>
+				
+			</form>
+		</div>
+		<div class="white_content" id="floating"> 
+			<div style="text-align: center">
+				<h3>会议详情</h3>
+				<table id="detailed" cellspacing="0" cellpadding="0" width="100%">
+					<thead>
+						<tr>
+							<th>会议介绍</th>
+							<th>会议日期</th>
+							<th>会议时长</th>
+							<th>会议地点</th>	
+							<th>会议人数</th>
+							<th>主办方</th>	
+							<th>承办者</th>	
+							<th>自动加入</th>
+							<th>是否公开</th>		
+							<th>投票功能</th>
+							<th>签名功能</th>
+							<th>抽奖功能</th>			
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>这是一场有预谋的会议</td>
+							<td>公元220年</td>
+							<td>一个时间</td>
+							<td>大明宫</td>
+							<td>2000人</td>
+							<td>银河系大佬</td>
+							<td>地球皮皮虾</td>
+							<td>是</td>
+							<td>是</td>
+							<td>已开启</td>
+							<td>已开启</td>
+							<td>已开启</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<br>
+			<div style="text-align: center">
+				<input type="button" onclick="hideDialog()" value="关闭"/>
+				<input type="button" value="删除"/>
+			</div>
+		</div>
+		<div class="black_overlay" id="overlay">
+		</div>
+	</body>
+</html>

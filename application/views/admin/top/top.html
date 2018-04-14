@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html"; charset="utf-8"/>
+		<style>
+			body{
+				background-color: #dafbff;
+			}
+			li{
+				display:inline;
+				list-style-type: none;
+			}
+			img{
+				border:0;
+			}
+			.topleft{
+				width:auto;
+				height:88px;
+				float:left;
+			}
+			.nav{
+				width:auto;
+				height:88px;
+				float:left;
+				margin-left:25px;
+				text-align: center;
+			}
+			.topright{
+				height:88px;
+				float:right;
+				margin-right: 25px;
+			}
+		</style>
+	</head>
+	<body bgcolor="#f1f1f1">
+		<div class="topleft">
+			<div class="topleft">
+				<a href="<?php echo site_url('admin/home')?>" target="_parent"><img src="<?php echo base_url('styles/admin/images/')?>logo.png"/></a></div>
+			<div class="nav"><a href="<?php echo site_url('admin/showWorkspace')?>" target="rightFrame"><img src="<?php echo base_url('styles/admin/images/')?>workplace.png"/><br>工作台</a></div>
+			<div class="nav"><a href="<?php echo site_url('admin/systemSet')?>" target="rightFrame"><img src="<?php echo base_url('styles/admin/images/')?>fitness.png"/><br>系统设置</a></div>
+		</div>
+		<div class="topright">
+			<br><br>
+			<a href="<?php echo site_url('admin/showAbout')?>" target="rightFrame">关于</a>|
+			<a href="<?php echo site_url('admin/adminLogin')?>" target="_parent">退出</a>
+		</div>
+	</body>
+</html>
