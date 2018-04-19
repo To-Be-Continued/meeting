@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>启迹移动会议实时互动系统</title>
+<link href="<?php echo base_url('styles/index/css/')?>login.css" rel="stylesheet" type="text/css" media="all"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+	body{
+		background: url("<?php echo base_url('styles/index/images/')?>login_back.png")no-repeat;
+		background-size: 100%;
+		height: 100%;
+		width: 100%;
+	}
+</style>
+</head>
+<body>
+<!--img id="bgImg" src="<?php echo base_url('styles/index/images/')?>login_back.jpg"-->
+<div class="login-form">
+			<div class="top_login">
+				<img src="<?php echo base_url('styles/index/images/')?>logo.png"/>
+			</div>
+			<h1>启迹移动会议实时互动系统</h1>
+			<div class="login-top">
+			<form action="<?php echo site_url('index/enterHome')?>" method="post">
+				<div class="login-ic">
+					<i ></i>
+					<input id="m_id" name="m_id" type="text"  value="会议ID" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '会议ID';}"/>
+					<div class="clear"> </div>
+				</div>
+				<div class="login-ic">
+					<i class="icon"></i>
+					<input id="m_pwd" name="m_pwd" type="password"   onFocus="this.value = '';"/>
+					<div class="clear"> </div>
+				</div>
+			
+				<div class="log-bwn">
+					<input type="submit"  value="登录" >
+				</div>
+				</form>
+			</div>
+			<p class="copy">© 2018 启迹工作室</p>
+</div>		
+</body>
+</html>

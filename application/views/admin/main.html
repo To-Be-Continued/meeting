@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+	<title>移动会议实时互动后台管理系统</title>
+	<?php 
+	if(isset($token))
+	{
+		setcookie("token",$token);
+	}
+	?>
+</head>
+	<frameset rows="88,*" cols="*" frameborder="no" border="0" framespacing="0">
+		<frame src="<?php echo site_url('admin/showTop')?>" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" />
+		<frameset cols="187,*" frameborder="no" border="0" framespacing="0">
+			<frame src="<?php echo site_url('admin/showLeft')?>" name="leftFrame" scrolling="No" noresize="noresize" id="leftFrame" title="leftFrame" />
+			<frame src="<?php echo site_url('admin/showDefault')?>" name="rightFrame" id="rightFrame" title="rightFrame" />
+		</frameset>
+	</frameset>
+</html>

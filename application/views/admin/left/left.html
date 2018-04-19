@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content=Type" content="text/html"; charset="utf-8"/>
+		<style type="text/css">
+			body{
+				background-color:#eeedee;
+				text-align: left;
+			}
+			ul{
+				background-color:#eeedee;
+				width:100%;
+				margin:0 auto;
+
+			}
+			li{
+				list-style-type: none;
+			}
+			a{
+				text-decoration:none;
+			}
+		</style>
+		<script type="text/javascript">
+			var flag1 = 0;
+			var flag2 = 0;
+			function showMessage()
+			{
+				var message = document.getElementById("message");
+				if(flag1 == 0){
+					message.style.display="none";
+					flag1 = 1;
+				}else{
+					message.style.display="block";
+					flag1 = 0;
+				}
+			}
+			function showOther()
+			{
+				var ohter = document.getElementById("other");
+				if(flag2 == 0){
+					other.style.display="none";
+					flag2 = 1;
+				}else{
+					ohter.style.display="block";
+					flag2 = 0;
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<dl id="leftmemu">
+			<dd>
+				<div><a href="javascript:showMessage()"/>管理信息</div>
+				<ul id="message" class="astyle">
+					<li><a href="<?php echo site_url('admin/showUsers')?>" target="rightFrame">[用户管理]</a></li><br>
+					<li><a href="<?php echo site_url('admin/showMeets')?>" target="rightFrame">[会议管理]</a></li></ul>
+			</dd>
+			<dd>
+				<div><a href="javascript:showOther()">其他设置</a></div>
+				<ul id="other">
+					<li><a href="<?php echo site_url('admin/showPersonal')?>" target="rightFrame">[个人设置]</a></li></ul>
+			</dd>
+		</dl>
+	</body>
+</html>
